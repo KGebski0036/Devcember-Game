@@ -1,1 +1,3 @@
-# Devcember-Game asd
+# Devcember-Game
+
+to jest okropny pomysł....
