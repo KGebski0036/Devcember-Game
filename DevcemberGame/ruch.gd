@@ -1,39 +1,47 @@
 extends KinematicBody2D
 
-var velocity = Vector2()
-export (int) var speed = 200
+const UP_DIRECTION := Vector2.UP
 
-export var jump_heigh : float
-export var jump_time_to_peak : float
-export var jump_time_to_descent : float
+export var speed := 100.0
 
-onready var jump_velocity : float = ((2.0 * jump_heigh) / jump_time_to_peak	) * -1
-onready var jump_gravity : float = ((-2.0 * jump_heigh) / (jump_time_to_peak	* jump_time_to_peak)) * -1
-onready var fall_gravity : float = ((-2.0 * jump_heigh) / (jump_time_to_descent	* jump_time_to_descent)) * -1
+export var jump_strength := 150.0
+export var maximum_jumps := 1
+export var secound_jump_strength := 250.0
+export var gravity := 800.0
 
-func get_gravity() -> float:
-	return jump_gravity if velocity.y > 0.0 else fall_gravity
+var jumps_made := 0
+var velocity := Vector2.ZERO
+
+var states := Array() 
+
+func get_input(delta):
+	var horizontal_direction = Input.get_action_strength("right") - Input.get_action_strength("left")
+	velocity.x = horizontal_direction * speed
+	velocity.y += gravity * delta
 	
-func jump():
-	velocity.y = jump_velocity
-	
-	if Input.is_action_just_pressed("jump")  and is_on_floor():
-		jump()
-	velocity = move_and_slide(velocity)
+func get_state():
+	if(velocity.y > 0.0 and not is_on_floor()):
+		states.append("is_falling")
+		
+		if(Input.is_action_just_pressed("jump")):
+			states.append("is_double_jumping")
+			jumps_made += 1
+			if(jumps_made <= maximum_jumps):
+				velocity.y -= secound_jump_strength
+			
+	if(Input.is_action_just_pressed("jump") and is_on_floor()):
+		states.append("is_jumping")
+		jumps_made += 1
+		velocity.y = -jump_strength
 
-func get_input():
-	
-	velocity = Vector2()
-	if Input.is_action_pressed("right"):
-		velocity.x += 1
-	if Input.is_action_pressed("left"):
-		velocity.x -= 1
-	velocity = velocity.normalized() * speed
-	return velocity
-
+	if(is_zero_approx(velocity.x) and is_on_floor()):
+		states.append("is_idling")
+		jumps_made = 0
+		
+	if((not is_zero_approx(velocity.x)) and is_on_floor()):
+		states.append("is_running")
+		jumps_made = 0
 func _physics_process(delta):
-	velocity = get_input() * speed
-	velocity.y += get_gravity() * delta
-	
-	velocity = move_and_slide(velocity)
-
+	get_input(delta)
+	get_state()
+	velocity = move_and_slide(velocity, UP_DIRECTION)
