@@ -12,7 +12,7 @@ extents = Vector2( 352, 32 )
 [node name="poruszanie" type="Node2D"]
 
 [node name="postac" type="KinematicBody2D" parent="."]
-position = Vector2( 200, 192 )
+position = Vector2( 184, 56 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -28,7 +28,7 @@ texture = ExtResource( 1 )
 shape = SubResource( 2 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2( 328, 296 )
+position = Vector2( 312, 160 )
 __meta__ = {
 "_edit_group_": true
 }
