@@ -1,7 +1,8 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://assets/cavesofgallet_tiles.png" type="Texture" id=1]
-[ext_resource path="res://assets/Character.tscn" type="PackedScene" id=2]
+[ext_resource path="res://player/Character.tscn" type="PackedScene" id=2]
+[ext_resource path="res://player/characters/CharacterManager.gd" type="Script" id=3]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
@@ -1621,5 +1622,17 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 7, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 
 anchor_mode = 0
 current = true
 
-[node name="Character" parent="." instance=ExtResource( 2 )]
-position = Vector2( 169, 75 )
+[node name="CharacterManager" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="Character2" parent="CharacterManager" instance=ExtResource( 2 )]
+position = Vector2( 202, 78 )
+
+[node name="Character" parent="CharacterManager" instance=ExtResource( 2 )]
+position = Vector2( 174, 77 )
+
+[node name="RoundTimer" type="Timer" parent="CharacterManager"]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="CharacterManager/RoundTimer" to="CharacterManager" method="_on_RoundTimer_timeout"]
