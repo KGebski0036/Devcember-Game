@@ -12,7 +12,6 @@ config_version=4
 
 config/name="DevcemberGame"
 run/main_scene="res://Word.tscn"
-config/icon="res://icon.png"
 
 [display]
 
