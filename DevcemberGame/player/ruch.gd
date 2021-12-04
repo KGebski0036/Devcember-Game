@@ -2,23 +2,21 @@ extends KinematicBody2D
 
 class_name Character
 
-
 onready var WallColider : RayCast2D = $WallColider
+onready var ShootColider : RayCast2D = $ShootColider
 
 const UP_DIRECTION := Vector2.UP
 
 export var speed := 100.0
-
+export var shoot_is_visible := false
 export var max_jump_strength := 150.0
 export var maximum_jumps := 3
 export var weakening_jumps := 10.0
 export var gravity := 500.0
+export var point_to_shoot = false
 
 var jump_strength = max_jump_strength
 var is_active := false
-
-var wallJump := 250
-var jumpWall := 175
 var jumps_made := 0
 var velocity := Vector2.ZERO
 
@@ -26,19 +24,18 @@ var horizontal_direction: float = 0
 
 func _physics_process(delta):
 	if(is_active):
-		update_input(delta)
+		update_input()
 		execute_status( update_state() )
-		$ShootColider.is_visible = true
 	else:
 		horizontal_direction = 0
-		$ShootColider.is_visible = false
-		
 	
 	velocity.x = lerp(velocity.x, horizontal_direction * speed, 0.2)
 	velocity.y += gravity * delta
 	velocity = move_and_slide(velocity, UP_DIRECTION)
+	
+	ShootColider.visible = shoot_is_visible
 
-func update_input(delta):
+func update_input():
 	horizontal_direction = Input.get_action_strength("right") - Input.get_action_strength("left")
 
 func update_state():
@@ -81,4 +78,5 @@ func execute_status(states : Array):
 			jumps_made += 1
 			velocity.y -= jump_strength
 			jump_strength -= weakening_jumps
-
+func show_hide_arrow():
+	$Strzalka.visible = !$Strzalka.visible
