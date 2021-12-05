@@ -57,14 +57,13 @@ func shoot_tour():
 	children[active_index].shoot_is_visible = true
 	#tour_is_active = true
 func get_input():
-	if(Input.is_action_just_pressed("right")):
+	if(Input.is_action_just_pressed("nextcharacter")):
 		children[active_index].show_hide_arrow()
 		active_index=(active_index-1) % children.size()
 		children[active_index].show_hide_arrow()
-	if(Input.is_action_just_pressed("left")):
+	if(Input.is_action_just_pressed("prevcharacter")):
 		children[active_index].show_hide_arrow()
 		active_index=(active_index+1) % children.size()
 		children[active_index].show_hide_arrow()
 	if(Input.is_action_just_pressed("accept")):
 		return true
-			
