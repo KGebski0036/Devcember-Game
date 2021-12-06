@@ -4,23 +4,28 @@ class_name Character
 
 onready var WallColider : RayCast2D = $WallColider
 onready var ShootColider : RayCast2D = $ShootColider
+onready var Mark = $Strzalka
 
 const UP_DIRECTION := Vector2.UP
 
 export var speed := 100.0
-export var shoot_is_visible := false
+
 export var max_jump_strength := 150.0
 export var maximum_jumps := 3
 export var weakening_jumps := 10.0
 export var gravity := 500.0
-export var point_to_shoot = false
 
-var jump_strength = max_jump_strength
+var point_to_shoot := false
+var shoot_is_visible := false
 var is_active := false
+var is_ready := false
+
+var main_status := "not_active" 
+
+var jump_strength := max_jump_strength
 var jumps_made := 0
 var velocity := Vector2.ZERO
-
-var horizontal_direction: float = 0
+var horizontal_direction := 0.0
 
 func _physics_process(delta):
 	if(is_active):
@@ -78,5 +83,36 @@ func execute_status(states : Array):
 			jumps_made += 1
 			velocity.y -= jump_strength
 			jump_strength -= weakening_jumps
-func show_hide_arrow():
-	$Strzalka.visible = !$Strzalka.visible
+			
+	
+func change_main_status(new_main_status):
+	match new_main_status:
+		"stop":
+			is_active = false
+			shoot_is_visible = false
+			Mark.visible = true
+		"move":
+			is_active = true
+			shoot_is_visible = false
+			Mark.visible = true
+		"aim": 
+			is_ready = false
+			is_active = false
+			shoot_is_visible = true
+			point_to_shoot = false
+			Mark.visible = true
+		"ready":
+			is_ready = true
+			is_active = false
+			shoot_is_visible = true
+			point_to_shoot = true
+			Mark.visible = true
+		"not_active":
+			is_active = false
+			shoot_is_visible = false
+			Mark.visible = false
+		_:
+			print("Something is wrong ... i can feel it")
+			
+	main_status = new_main_status
+	
