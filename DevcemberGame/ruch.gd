@@ -3,6 +3,12 @@ extends KinematicBody2D
 var wallJump = 250
 var jumpWall = 175
 
+onready var leftWall := $LeftWall
+onready var rightWall := $RightWall
+onready var strzal := $STRZAL
+onready var liniaStrzalu = $LiniaStrzalu
+var zasiegStrzalu
+
 const UP_DIRECTION := Vector2.UP
 
 export var speed := 100.0
@@ -16,6 +22,7 @@ var jumps_made := 0
 var velocity := Vector2.ZERO
 
 var states := Array() 
+
 
 func get_input(delta):
 	var horizontal_direction = Input.get_action_strength("right") - Input.get_action_strength("left")
@@ -63,12 +70,15 @@ func nextToWall():
 	return nextToRightWall() or nextToLeftWall()
 	
 func nextToRightWall():
-	return $RightWall.is_colliding()
+	return rightWall.is_colliding()
 	
 func nextToLeftWall():
-	return $LeftWall.is_colliding()
+	return leftWall.is_colliding()
 
 func _physics_process(delta):
 	get_input(delta)
 	get_state()
 	velocity = move_and_slide(velocity, UP_DIRECTION)
+	if(strzal.is_colliding()): 
+		draw_line(Vector2(), strzal.get_collision_point() - position, Color.darkmagenta)
+		

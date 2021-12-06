@@ -36,3 +36,9 @@ enabled = true
 __meta__ = {
 "_edit_group_": true
 }
+
+[node name="STRZAL" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 200, 0 )
+
+[node name="LiniaStrzalu" type="Line2D" parent="."]
