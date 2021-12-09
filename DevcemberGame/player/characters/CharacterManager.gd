@@ -1,6 +1,7 @@
 extends Node
 
-onready var RoundTimer = $RoundTimer
+#onready var RoundTimer = $RoundTimer
+onready var RoundTimer = $Timer
 onready var EndTourButton = $EndTour
 
 export var starting_character_index = 0
@@ -41,7 +42,7 @@ func _physics_process(_delta):
 				children[active_index].change_main_status("aim")
 				number_of_ready_characters -= 1
 			
-func _on_RoundTimer_timeout():
+func _on_Timer_timer_out():
 	children[active_index].change_main_status("stop")
 	tour_is_active = false
 	
@@ -51,11 +52,9 @@ func choose_character():
 			move_tour()
 		elif(tour  == "shoot"):
 			shoot_tour()
-			
 
 func move_tour():
-	RoundTimer.wait_time = moveTourTime
-	RoundTimer.start()
+	RoundTimer.start_counting(moveTourTime)
 	children[active_index].change_main_status("move")
 	tour_is_active = true
 	list_moved_characters.append(active_index)
