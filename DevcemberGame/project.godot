@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "KinematicBody2D",
 "class": "Character",
 "language": "GDScript",
-"path": "res://player/ruch.gd"
+"path": "res://player/Character.gd"
 } ]
 _global_script_class_icons={
 "Character": ""

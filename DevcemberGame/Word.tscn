@@ -1637,4 +1637,17 @@ position = Vector2( 38, 186 )
 wait_time = 10.0
 one_shot = true
 
+[node name="EndTour" type="Button" parent="CharacterManager"]
+visible = false
+margin_left = 142.0
+margin_top = 3.0
+margin_right = 190.0
+margin_bottom = 23.0
+text = "End"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="timeout" from="CharacterManager/RoundTimer" to="CharacterManager" method="_on_RoundTimer_timeout"]
+[connection signal="mouse_entered" from="CharacterManager/EndTour" to="CharacterManager" method="_on_EndTour_mouse_entered"]
+[connection signal="mouse_exited" from="CharacterManager/EndTour" to="CharacterManager" method="_on_EndTour_mouse_exited"]
