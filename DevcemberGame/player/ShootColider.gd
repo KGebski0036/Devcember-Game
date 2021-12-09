@@ -12,6 +12,6 @@ func _physics_process(_delta):
 			point = get_collision_point() - global_position
 		else:
 			point = cast_to
-func _draw():
-	draw_line(Vector2(0,0), point , Color.royalblue)
+#func _draw():
+#	draw_line(Vector2(0,0), point , Color.royalblue)
 
