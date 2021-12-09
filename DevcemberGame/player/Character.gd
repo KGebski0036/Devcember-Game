@@ -9,11 +9,13 @@ onready var Mark = $Strzalka
 const UP_DIRECTION := Vector2.UP
 
 export var speed := 100.0
-
 export var max_jump_strength := 150.0
 export var maximum_jumps := 3
 export var weakening_jumps := 10.0
 export var gravity := 500.0
+export var maxhealth := 200
+export var defense := 1
+export var alakurwarzeczywiscie := 250 #maksymalna wysokosc z ktorej moze upasc
 
 var point_to_shoot := false
 var shoot_is_visible := false
@@ -26,6 +28,16 @@ var jump_strength := max_jump_strength
 var jumps_made := 0
 var velocity := Vector2.ZERO
 var horizontal_direction := 0.0
+var health:= maxhealth
+var jebudu
+
+func damage(attack: int, piercing: int = 0):
+	
+	var damage = attack / (defense - piercing)
+	health -= damage
+	if (health < 0):
+		pass
+	emit_signal("damage_changed", health/maxhealth )
 
 func _physics_process(delta):
 	if(is_active):
@@ -36,8 +48,11 @@ func _physics_process(delta):
 	
 	velocity.x = lerp(velocity.x, horizontal_direction * speed, 0.2)
 	velocity.y += gravity * delta
+	jebudu = velocity.y
 	velocity = move_and_slide(velocity, UP_DIRECTION)
-	
+	if(jebudu - velocity.y > alakurwarzeczywiscie):
+		
+		execute_status(["jebnal_w_ziemie"])
 	ShootColider.visible = shoot_is_visible
 
 func update_input():
@@ -83,7 +98,9 @@ func execute_status(states : Array):
 			jumps_made += 1
 			velocity.y -= jump_strength
 			jump_strength -= weakening_jumps
-			
+	if(states.has("jebnal_w_ziemie")):
+		health -= (jebudu - velocity.y - alakurwarzeczywiscie) / 5
+		print(health)
 	
 func change_main_status(new_main_status):
 	match new_main_status:
