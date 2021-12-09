@@ -5,7 +5,7 @@ onready var RoundTimer = $Timer
 onready var EndTourButton = $EndTour
 
 export var starting_character_index = 0
-export var moveTourTime = 1
+export var moveTourTime = 5
 
 var tour_is_active = false
 var children: Array

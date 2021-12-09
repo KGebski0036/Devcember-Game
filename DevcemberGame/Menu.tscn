@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Menu/Menu.gd" type="Script" id=1]
-[ext_resource path="res://assets/fonts/font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Menu.gd" type="Script" id=1]
 
 [node name="Menu" type="Control"]
 anchor_right = 1.0
@@ -15,43 +14,38 @@ __meta__ = {
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 12.0
-margin_top = -131.0
-margin_right = 114.0
-margin_bottom = 7.0
+margin_top = -101.0
+margin_right = 84.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="StartButton" type="Button" parent="VBoxContainer"]
-margin_right = 102.0
-margin_bottom = 28.0
+margin_right = 84.0
+margin_bottom = 20.0
 focus_neighbour_top = NodePath("../QuitButton")
-custom_fonts/font = ExtResource( 2 )
 text = "Start"
 align = 0
 
 [node name="LoadGameButton" type="Button" parent="VBoxContainer"]
-margin_top = 32.0
-margin_right = 102.0
-margin_bottom = 60.0
-custom_fonts/font = ExtResource( 2 )
+margin_top = 24.0
+margin_right = 84.0
+margin_bottom = 44.0
 text = "Load Game"
 align = 0
 
 [node name="OptionsButton" type="Button" parent="VBoxContainer"]
-margin_top = 64.0
-margin_right = 102.0
-margin_bottom = 92.0
-custom_fonts/font = ExtResource( 2 )
+margin_top = 48.0
+margin_right = 84.0
+margin_bottom = 68.0
 text = "Options"
 align = 0
 
 [node name="QuitButton" type="Button" parent="VBoxContainer"]
-margin_top = 96.0
-margin_right = 102.0
-margin_bottom = 124.0
+margin_top = 72.0
+margin_right = 84.0
+margin_bottom = 92.0
 focus_neighbour_bottom = NodePath("../StartButton")
-custom_fonts/font = ExtResource( 2 )
 text = "Quit"
 align = 0
 

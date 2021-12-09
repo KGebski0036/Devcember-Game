@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Enemy.gd" type="Script" id=1]
-[ext_resource path="res://enemy.png" type="Texture" id=2]
-[ext_resource path="res://EntityBar.tscn" type="PackedScene" id=3]
-[ext_resource path="res://bar.png" type="Texture" id=4]
-[ext_resource path="res://emptybar.png" type="Texture" id=5]
+[ext_resource path="res://Enemy/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://Enemy/enemy.png" type="Texture" id=2]
+[ext_resource path="res://EntityBar/EntityBar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Enemy/bar.png" type="Texture" id=4]
+[ext_resource path="res://EntityBar/emptybar.png" type="Texture" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 4.0
@@ -41,6 +41,6 @@ stretch_margin_top = 1
 stretch_margin_right = 1
 stretch_margin_bottom = 1
 
-[connection signal="damage_changed" from="." to="EntityBar" method="_on_Enemy_damage_changed"]
 [connection signal="damage_changed" from="." to="EntityBar" method="_on_damage_changed"]
+[connection signal="damage_changed" from="." to="EntityBar" method="_on_Enemy_damage_changed"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
