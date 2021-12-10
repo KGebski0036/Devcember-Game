@@ -19,6 +19,11 @@ func damage(attack: int, piercing: int = 0):
 func _ready():
 	health = maxhealth
 
-func _on_Area2D_body_entered(body):
+func _on_HitDetector_body_entered(body):
 	if(body.is_in_group("bullet")):
 		self.damage(body.attack,body.piercing)
+
+
+func _on_HitDetector_area_entered(bullet):
+		if bullet is Bullet:
+			damage(bullet.damage, bullet.piercing)
