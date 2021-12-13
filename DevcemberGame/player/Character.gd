@@ -129,7 +129,5 @@ func change_main_status(new_main_status):
 			shoot_is_visible = false
 			Mark.visible = false
 		_:
-			print("Something is wrong ... i can feel it")
-			
+			push_error("Something is wrong ... i can feel it")
 	main_status = new_main_status
-	

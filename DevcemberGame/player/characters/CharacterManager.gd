@@ -10,6 +10,7 @@ export var moveTourTime = 5
 var tour_is_active = false
 var children: Array
 var active_index: int = starting_character_index
+var active_child: Character
 var list_moved_characters: Array
 var number_of_ready_characters = 0
 var tour = "move"
@@ -18,9 +19,9 @@ func _ready():
 	for x in get_children():
 		if x is Character:
 			children.append(x)
-			
-	children[active_index].change_main_status("stop")
-	
+	active_child=children[active_index]
+	active_child.change_main_status("stop")
+
 func _physics_process(_delta):
 	if(!tour_is_active):
 		choose_character()
@@ -34,53 +35,55 @@ func _physics_process(_delta):
 		
 	if(tour == "shoot" or tour == "end_of_tour"):
 		if(Input.is_action_just_pressed("shoot")):
-			if(not children[active_index].is_ready):
-				children[active_index].change_main_status("ready")
+			if(not active_child.is_ready):
+				active_child.change_main_status("ready")
 				number_of_ready_characters += 1
 		if(Input.is_action_just_pressed("cancel_shoot")):
-			if(children[active_index].is_ready):
-				children[active_index].change_main_status("aim")
+			if(active_child.is_ready):
+				active_child.change_main_status("aim")
 				number_of_ready_characters -= 1
 			
 func _on_Timer_timer_out():
-	children[active_index].change_main_status("stop")
+	active_child.change_main_status("stop")
 	tour_is_active = false
 	
 func choose_character():
 	if(get_input()):
-		if(tour == "move" and !list_moved_characters.has(active_index)):
+		if(tour == "move" and !list_moved_characters.has(active_child)):
 			move_tour()
 		elif(tour  == "shoot"):
 			shoot_tour()
 
 func move_tour():
 	RoundTimer.start_counting(moveTourTime)
-	children[active_index].change_main_status("move")
+	active_child.change_main_status("move")
 	tour_is_active = true
-	list_moved_characters.append(active_index)
+	list_moved_characters.append(active_child)
 	
 func shoot_tour():
-	children[active_index].change_main_status("aim")
+	active_child.change_main_status("aim")
 	
 func get_input():
 	if(Input.is_action_just_pressed("nextcharacter")):
 		change_character(1)
 	elif(Input.is_action_just_pressed("prevcharacter")):
 		change_character(-1)
-	
 	if(Input.is_action_just_pressed("accept")):
 		return true
-		
+
 func change_character(input):
-	children[active_index].change_main_status("not_active")
+	active_child.change_main_status("not_active")
 	active_index=(active_index-input) % children.size()
+	active_child = children[active_index]
+	
+	
 	if(tour == "move"):
-		children[active_index].change_main_status("stop")
+		active_child.change_main_status("stop")
 	else:
-		if(children[active_index].is_ready):
-			children[active_index].change_main_status("ready")
+		if(active_child.is_ready):
+			active_child.change_main_status("ready")
 		else:
-			children[active_index].change_main_status("aim")
+			active_child.change_main_status("aim")
 
 func _on_EndTour_mouse_entered():
 	for it in children:
