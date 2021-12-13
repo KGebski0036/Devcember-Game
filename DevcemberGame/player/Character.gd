@@ -17,7 +17,7 @@ export var maxhealth := 200
 export var defense := 1
 export var alakurwarzeczywiscie := 250 #maksymalna wysokosc z ktorej moze upasc
 
-var point_to_shoot := false
+var point_to_shoot := false # co to kurwa znaczy
 var shoot_is_visible := false
 var is_active := false
 var is_ready := false
@@ -29,7 +29,7 @@ var jumps_made := 0
 var velocity := Vector2.ZERO
 var horizontal_direction := 0.0
 var health:= maxhealth
-var jebudu
+var jebudu # jprdl
 
 func damage(attack: int, piercing: int = 0):
 	
