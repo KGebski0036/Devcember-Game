@@ -3,5 +3,5 @@ extends TextureProgress
 func _ready():
 	pass
 
-func _on_damage_changed(newhealth):
-	pass
+func _on_Enemy_damage_changed(ratio):
+	value = ratio

@@ -39,7 +39,7 @@ enum TURN_STATE {
 
 #turn related
 var target_point:Vector2
-var point_to_shoot := false # co to znaczy (jakby nie potrafię tego przetłumaczyć na polski)
+var has_target := false # co to znaczy (jakby nie potrafię tego przetłumaczyć na polski)
 var shoot_is_visible := false
 var is_active := false
 var is_ready := false
@@ -143,13 +143,13 @@ func change_turn_state(new_turn_state):
 			is_ready = false
 			is_active = false
 			shoot_is_visible = true
-			point_to_shoot = false
+			has_target = false
 			Mark.visible = true
 		TURN_STATE.READY:
 			is_ready = true
 			is_active = false
 			shoot_is_visible = true
-			point_to_shoot = true
+			has_target = true
 			Mark.visible = true
 		TURN_STATE.NOT_ACTIVE:
 			is_active = false

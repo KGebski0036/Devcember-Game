@@ -27,5 +27,7 @@ margin_left = -6.0
 margin_top = -8.0
 margin_right = 6.0
 margin_bottom = -5.0
+value = 1.0
 
+[connection signal="damage_changed" from="." to="EntityBar" method="_on_Enemy_damage_changed"]
 [connection signal="area_entered" from="HitDetector" to="." method="_on_HitDetector_area_entered"]

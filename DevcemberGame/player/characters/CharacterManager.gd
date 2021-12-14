@@ -6,13 +6,22 @@ onready var EndTourButton = $EndTour
 export var starting_character_index = 0
 export var moveTourTime = 5
 
+signal enemy_tour_started
+
 var tour_is_active = false
 var children: Array
 var active_index: int = starting_character_index
 var active_child: Character
 var list_moved_characters: Array
 var number_of_ready_characters = 0
-var tour = "move"
+var tour = TOUR.MOVE
+
+enum TOUR { 
+	MOVE,
+	SHOOT,
+	END,
+	ENEMY
+}
 
 func _ready():
 	for x in get_children():
@@ -26,13 +35,13 @@ func _physics_process(_delta):
 		choose_character()
 
 	if(list_moved_characters.size() == children.size()):
-		tour = "shoot"
+		tour = TOUR.SHOOT
 		EndTourButton.visible = false
 	if(number_of_ready_characters == children.size() ):
-		tour = "end_of_tour"
+		tour = TOUR.END
 		EndTourButton.visible = true
 		
-	if(tour == "shoot" or tour == "end_of_tour"):
+	if(tour == TOUR.SHOOT or tour == TOUR.END):
 		if(Input.is_action_just_pressed("shoot")):
 			if(not active_child.is_ready):
 				active_child.change_turn_state(Character.TURN_STATE.READY)
@@ -48,9 +57,9 @@ func _on_Timer_timer_out():
 	
 func choose_character():
 	if(get_input()):
-		if(tour == "move" and !list_moved_characters.has(active_child)):
+		if(tour == TOUR.MOVE and !list_moved_characters.has(active_child)):
 			move_tour()
-		elif(tour  == "shoot"):
+		elif(tour  == TOUR.SHOOT):
 			shoot_tour()
 
 func move_tour():
@@ -76,7 +85,7 @@ func change_character(input):
 	active_child = children[active_index]
 	
 	
-	if(tour == "move"):
+	if(tour == TOUR.MOVE):
 		active_child.change_turn_state(Character.TURN_STATE.STOP)
 	else:
 		if(active_child.is_ready):
@@ -99,3 +108,9 @@ func _on_EndTour_pressed():
 		var bullet = it.bullet_scene.instance() as Bullet
 		bullet.init(it.target_point)
 		it.add_child(bullet)
+	list_moved_characters.clear()
+	tour_is_active = true
+	number_of_ready_characters = 0
+	tour = TOUR.ENEMY
+	emit_signal("enemy_tour_started")
+	EndTourButton.visible = false
