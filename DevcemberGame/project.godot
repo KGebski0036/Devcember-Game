@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Area2D",
+"class": "Bullet",
+"language": "GDScript",
+"path": "res://Bullet/Bullet.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Character",
 "language": "GDScript",
 "path": "res://player/Character.gd"
 } ]
 _global_script_class_icons={
+"Bullet": "",
 "Character": ""
 }
 
