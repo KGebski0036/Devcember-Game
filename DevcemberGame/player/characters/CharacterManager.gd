@@ -1,5 +1,4 @@
 extends Node
-
 #onready var RoundTimer = $RoundTimer
 onready var RoundTimer = $Timer
 onready var EndTourButton = $EndTour
@@ -20,7 +19,7 @@ func _ready():
 		if x is Character:
 			children.append(x)
 	active_child=children[active_index]
-	active_child.change_main_status("stop")
+	active_child.change_turn_state(Character.TURN_STATE.STOP)
 
 func _physics_process(_delta):
 	if(!tour_is_active):
@@ -36,15 +35,15 @@ func _physics_process(_delta):
 	if(tour == "shoot" or tour == "end_of_tour"):
 		if(Input.is_action_just_pressed("shoot")):
 			if(not active_child.is_ready):
-				active_child.change_main_status("ready")
+				active_child.change_turn_state(Character.TURN_STATE.READY)
 				number_of_ready_characters += 1
 		if(Input.is_action_just_pressed("cancel_shoot")):
 			if(active_child.is_ready):
-				active_child.change_main_status("aim")
+				active_child.change_turn_state(Character.TURN_STATE.AIM)
 				number_of_ready_characters -= 1
 			
 func _on_Timer_timer_out():
-	active_child.change_main_status("stop")
+	active_child.change_turn_state(Character.TURN_STATE.STOP)
 	tour_is_active = false
 	
 func choose_character():
@@ -56,12 +55,12 @@ func choose_character():
 
 func move_tour():
 	RoundTimer.start_counting(moveTourTime)
-	active_child.change_main_status("move")
+	active_child.change_turn_state(Character.TURN_STATE.MOVE)
 	tour_is_active = true
 	list_moved_characters.append(active_child)
 	
 func shoot_tour():
-	active_child.change_main_status("aim")
+	active_child.change_turn_state(Character.TURN_STATE.MOVE)
 	
 func get_input():
 	if(Input.is_action_just_pressed("nextcharacter")):
@@ -72,18 +71,18 @@ func get_input():
 		return true
 
 func change_character(input):
-	active_child.change_main_status("not_active")
+	active_child.change_turn_state(Character.TURN_STATE.NOT_ACTIVE)
 	active_index=(active_index-input) % children.size()
 	active_child = children[active_index]
 	
 	
 	if(tour == "move"):
-		active_child.change_main_status("stop")
+		active_child.change_turn_state(Character.TURN_STATE.STOP)
 	else:
 		if(active_child.is_ready):
-			active_child.change_main_status("ready")
+			active_child.change_turn_state(Character.TURN_STATE.READY)
 		else:
-			active_child.change_main_status("aim")
+			active_child.change_turn_state(Character.TURN_STATE.AIM)
 
 func _on_EndTour_mouse_entered():
 	for it in children:
@@ -93,3 +92,10 @@ func _on_EndTour_mouse_entered():
 func _on_EndTour_mouse_exited():
 	for it in children:
 		it.shoot_is_visible = false
+
+func _on_EndTour_pressed():
+	for it in children:
+		it = it as Character
+		var bullet = it.bullet_scene.instance() as Bullet
+		bullet.init(it.target_point)
+		it.add_child(bullet)

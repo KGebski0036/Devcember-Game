@@ -1655,3 +1655,4 @@ __meta__ = {
 [connection signal="timer_out" from="CharacterManager/Timer" to="CharacterManager" method="_on_Timer_timer_out"]
 [connection signal="mouse_entered" from="CharacterManager/EndTour" to="CharacterManager" method="_on_EndTour_mouse_entered"]
 [connection signal="mouse_exited" from="CharacterManager/EndTour" to="CharacterManager" method="_on_EndTour_mouse_exited"]
+[connection signal="pressed" from="CharacterManager/EndTour" to="CharacterManager" method="_on_EndTour_pressed"]
