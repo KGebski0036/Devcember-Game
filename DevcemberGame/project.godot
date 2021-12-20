@@ -18,10 +18,40 @@ _global_script_classes=[ {
 "class": "Character",
 "language": "GDScript",
 "path": "res://player/Character.gd"
+}, {
+"base": "State",
+"class": "CharacterState",
+"language": "GDScript",
+"path": "res://player/characters/stateMachine/CharacterState.gd"
+}, {
+"base": "Node",
+"class": "State",
+"language": "GDScript",
+"path": "res://player/characters/stateMachine/State.gd"
+}, {
+"base": "Node",
+"class": "Tour",
+"language": "GDScript",
+"path": "res://player/characters/tourMachine/Tour.gd"
+}, {
+"base": "Node",
+"class": "TourMenager",
+"language": "GDScript",
+"path": "res://player/characters/TourManager.gd"
+}, {
+"base": "Tour",
+"class": "TourState",
+"language": "GDScript",
+"path": "res://player/characters/tourMachine/TourState.gd"
 } ]
 _global_script_class_icons={
 "Bullet": "",
-"Character": ""
+"Character": "",
+"CharacterState": "",
+"State": "",
+"Tour": "",
+"TourMenager": "",
+"TourState": ""
 }
 
 [application]

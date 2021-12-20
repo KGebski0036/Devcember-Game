@@ -1,11 +1,8 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://assets/cavesofgallet_tiles.png" type="Texture" id=1]
-[ext_resource path="res://player/Character.tscn" type="PackedScene" id=2]
-[ext_resource path="res://player/characters/CharacterManager.gd" type="Script" id=3]
-[ext_resource path="res://assets/Timer/Scene.tscn" type="PackedScene" id=4]
-[ext_resource path="res://EnemyManager.gd" type="Script" id=5]
-[ext_resource path="res://Enemy/Enemy.tscn" type="PackedScene" id=6]
+[ext_resource path="res://EnemyManager.tscn" type="PackedScene" id=2]
+[ext_resource path="res://TourMenager.tscn" type="PackedScene" id=3]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
@@ -1624,45 +1621,6 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 7, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 
 anchor_mode = 0
 current = true
 
-[node name="CharacterManager" type="Node" parent="."]
-script = ExtResource( 3 )
-moveTourTime = 1
+[node name="TourMenager" parent="." instance=ExtResource( 3 )]
 
-[node name="Timer" parent="CharacterManager" instance=ExtResource( 4 )]
-margin_left = 276.0
-margin_top = 4.0
-margin_right = 276.0
-margin_bottom = 4.0
-rect_scale = Vector2( 0.24, 0.24 )
-
-[node name="Character2" parent="CharacterManager" instance=ExtResource( 2 )]
-position = Vector2( 25, 186 )
-
-[node name="Character1" parent="CharacterManager" instance=ExtResource( 2 )]
-position = Vector2( 12, 186 )
-
-[node name="Character3" parent="CharacterManager" instance=ExtResource( 2 )]
-position = Vector2( 233, 91 )
-
-[node name="EndTour" type="Button" parent="CharacterManager"]
-visible = false
-margin_left = 142.0
-margin_top = 3.0
-margin_right = 190.0
-margin_bottom = 23.0
-text = "End"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EnemyManager" type="Node" parent="."]
-script = ExtResource( 5 )
-
-[node name="Enemy" parent="EnemyManager" instance=ExtResource( 6 )]
-position = Vector2( 215, 100 )
-
-[connection signal="enemy_tour_started" from="CharacterManager" to="EnemyManager" method="_on_CharacterManager_enemy_tour_started"]
-[connection signal="timer_out" from="CharacterManager/Timer" to="CharacterManager" method="_on_Timer_timer_out"]
-[connection signal="mouse_entered" from="CharacterManager/EndTour" to="CharacterManager" method="_on_EndTour_mouse_entered"]
-[connection signal="mouse_exited" from="CharacterManager/EndTour" to="CharacterManager" method="_on_EndTour_mouse_exited"]
-[connection signal="pressed" from="CharacterManager/EndTour" to="CharacterManager" method="_on_EndTour_pressed"]
+[node name="EnemyManager" parent="." instance=ExtResource( 2 )]

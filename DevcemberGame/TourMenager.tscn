@@ -1,11 +1,25 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://player/characters/tourMachine/TourMachine.gd" type="Script" id=1]
+[ext_resource path="res://player/characters/TourManager.gd" type="Script" id=2]
+[ext_resource path="res://player/characters/tourMachine/ChooseCharacter.gd" type="Script" id=3]
+[ext_resource path="res://player/Character.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/Timer/Scene.tscn" type="PackedScene" id=5]
+[ext_resource path="res://player/characters/tourMachine/Move.gd" type="Script" id=6]
+[ext_resource path="res://player/characters/tourMachine/Enemy.gd" type="Script" id=7]
+[ext_resource path="res://player/characters/tourMachine/End.gd" type="Script" id=9]
+[ext_resource path="res://player/characters/tourMachine/Shoot.gd" type="Script" id=10]
+
+[sub_resource type="GDScript" id=1]
+script/source = "class_name Character
 extends KinematicBody2D
 
-class_name Character
+
 
 onready var WallColider : RayCast2D = $WallColider
 onready var ShootColider : RayCast2D = $ShootColider
 onready var Mark : Sprite = $Strzalka
-#onready var StateMachine = $StateMachine
+onready var StateMachine = $StateMachine
 
 const UP_DIRECTION := Vector2.UP
 
@@ -74,18 +88,18 @@ var health:= max_health
 #	ShootColider.visible = shoot_is_visible
 #
 #func update_input():
-#	horizontal_direction = Input.get_action_strength("right") - Input.get_action_strength("left")
+#	horizontal_direction = Input.get_action_strength(\"right\") - Input.get_action_strength(\"left\")
 #
 func update_state():
 	var states := Array() 
 
 	if(is_on_floor()):
-		if(Input.is_action_just_pressed("jump")):
+		if(Input.is_action_just_pressed(\"jump\")):
 			states.append(ACTION_STATE.JUMPING)
 	else:
 		if(velocity.y > 0.0):
 			states.append(ACTION_STATE.FALLING)
-			if(Input.is_action_just_pressed("jump")):
+			if(Input.is_action_just_pressed(\"jump\")):
 				states.append(ACTION_STATE.DOUBLE_JUMPING)
 		if(WallColider.is_colliding()):
 			states.append(ACTION_STATE.WALL_SLIDING)
@@ -149,7 +163,7 @@ func execute_state(states : Array):
 #			shoot_is_visible = false
 #			Mark.visible = false
 #		_:
-#			push_error("Something is wrong ... i can feel it")
+#			push_error(\"Something is wrong ... i can feel it\")
 #	turn_state = new_turn_state
 #
 #func damage(attack: int, piercing: int = 0):
@@ -157,4 +171,62 @@ func execute_state(states : Array):
 #	health -= damage
 #	if (health < 0):
 #		pass #TODO
-#	emit_signal("damage_changed", float(health) /max_health )
+#	emit_signal(\"damage_changed\", float(health) /max_health )
+"
+
+[node name="TourMenager" type="Node"]
+script = ExtResource( 2 )
+
+[node name="Timer" parent="." instance=ExtResource( 5 )]
+margin_left = 276.0
+margin_top = 4.0
+margin_right = 276.0
+margin_bottom = 4.0
+rect_scale = Vector2( 0.24, 0.24 )
+
+[node name="Character2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 69, 11 )
+script = SubResource( 1 )
+
+[node name="Character1" parent="." instance=ExtResource( 4 )]
+position = Vector2( 249, 22 )
+script = SubResource( 1 )
+
+[node name="Character3" parent="." instance=ExtResource( 4 )]
+position = Vector2( 246, 75 )
+script = SubResource( 1 )
+
+[node name="EndTour" type="Button" parent="."]
+visible = false
+margin_left = 142.0
+margin_top = 3.0
+margin_right = 190.0
+margin_bottom = 23.0
+text = "End"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TourMachine" type="Node" parent="."]
+script = ExtResource( 1 )
+initial_tour = NodePath("ChooseCharacter")
+
+[node name="Move" type="Node" parent="TourMachine"]
+script = ExtResource( 6 )
+
+[node name="Shoot" type="Node" parent="TourMachine"]
+script = ExtResource( 10 )
+
+[node name="End" type="Node" parent="TourMachine"]
+script = ExtResource( 9 )
+
+[node name="Enemy" type="Node" parent="TourMachine"]
+script = ExtResource( 7 )
+
+[node name="ChooseCharacter" type="Node" parent="TourMachine"]
+script = ExtResource( 3 )
+
+[connection signal="timer_out" from="Timer" to="." method="_on_Timer_timer_out"]
+[connection signal="mouse_entered" from="EndTour" to="." method="_on_EndTour_mouse_entered"]
+[connection signal="mouse_exited" from="EndTour" to="." method="_on_EndTour_mouse_exited"]
+[connection signal="pressed" from="EndTour" to="." method="_on_EndTour_pressed"]

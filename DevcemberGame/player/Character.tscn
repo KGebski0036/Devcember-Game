@@ -1,11 +1,16 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://player/Character.gd" type="Script" id=1]
 [ext_resource path="res://player/player.png" type="Texture" id=2]
 [ext_resource path="res://player/WallColider.gd" type="Script" id=3]
 [ext_resource path="res://player/ShootColider.gd" type="Script" id=4]
 [ext_resource path="res://player/characters/strzalka.png" type="Texture" id=5]
-[ext_resource path="res://Bullet/Bullet.tscn" type="PackedScene" id=6]
+[ext_resource path="res://player/characters/stateMachine/Active.gd" type="Script" id=6]
+[ext_resource path="res://player/characters/stateMachine/StateMachine.gd" type="Script" id=7]
+[ext_resource path="res://player/characters/stateMachine/NotActive.gd" type="Script" id=8]
+[ext_resource path="res://player/characters/stateMachine/Ready.gd" type="Script" id=9]
+[ext_resource path="res://player/characters/stateMachine/Move.gd" type="Script" id=10]
+[ext_resource path="res://player/characters/stateMachine/Aim.gd" type="Script" id=11]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 3.0
@@ -14,7 +19,6 @@ height = 1.0
 [node name="Character" type="KinematicBody2D"]
 position = Vector2( -1.00974e-28, 0 )
 script = ExtResource( 1 )
-bullet_scene = ExtResource( 6 )
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.01, 0.01 )
@@ -33,6 +37,7 @@ cast_to = Vector2( 4, 0 )
 script = ExtResource( 3 )
 
 [node name="ShootColider" type="RayCast2D" parent="."]
+visible = false
 enabled = true
 cast_to = Vector2( 0, 5 )
 script = ExtResource( 4 )
@@ -42,3 +47,22 @@ visible = false
 position = Vector2( 4.76837e-07, -11 )
 scale = Vector2( 0.0253907, 0.0205078 )
 texture = ExtResource( 5 )
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource( 7 )
+initial_state = NodePath("NotActive")
+
+[node name="NotActive" type="Node" parent="StateMachine"]
+script = ExtResource( 8 )
+
+[node name="Active" type="Node" parent="StateMachine"]
+script = ExtResource( 6 )
+
+[node name="Move" type="Node" parent="StateMachine"]
+script = ExtResource( 10 )
+
+[node name="Aim" type="Node" parent="StateMachine"]
+script = ExtResource( 11 )
+
+[node name="Ready" type="Node" parent="StateMachine"]
+script = ExtResource( 9 )

@@ -9,7 +9,7 @@ export var defense = 1
 var health: int
    
 func damage(attack: int, piercing: int = 0):
-	var damage:float = float(attack) / max(defense - piercing,1)
+	var damage = attack / max(defense - piercing,1)
 	health -= damage
 	if (health < 0):
 		pass
